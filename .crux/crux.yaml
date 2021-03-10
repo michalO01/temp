@@ -27,7 +27,7 @@ parameters:
 
   - name: jmx
     displayName: JMeter scenario file
-    default: .crux/test/script/bing.jmx
+    default: .crux/test/script/dummytest.jmx
     type: string
 
   - name: jmeter_args
