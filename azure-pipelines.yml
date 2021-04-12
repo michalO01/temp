@@ -30,20 +30,6 @@ variables:
   kubernetesServiceConnection: ${{ parameters.kubernetes_service_connection }}
   repoName: MyTemp
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-
-- task: Bash@3
-  displayName: Build and run app
-  inputs:
-    targetType: 'inline'
-    script: |
-      npm install
-      node bulletin-board-app\server.js
-      lighthouse http://localhost:8080/
-
 stages:
 - stage: Build
   displayName: Test, Build and Push docker image
@@ -55,4 +41,3 @@ stages:
       npm install
       node bulletin-board-app\server.js
       lighthouse $(url)
-      displayName: Lighthouse tests
