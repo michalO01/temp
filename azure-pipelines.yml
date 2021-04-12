@@ -1,0 +1,58 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+name: $(BuildID)
+trigger: none
+resources:
+  repositories:
+    - repository: tests
+      type: github
+      name: michalO01/temp
+      #ref: refs/tags/0.3.2
+      ref: refs/heads/lighhouse
+      #ref: refs/tags/0.4.1
+      endpoint: crux
+
+parameters:
+  - name: url
+    type: string
+    default: http://localhost:8080/
+    
+  - name: kubernetes_service_connection
+    default: _
+    type: string
+
+variables:
+  #test execution environment & config
+  cluster_namespace: crux$(Build.BuildID)
+  kubernetesServiceConnection: ${{ parameters.kubernetes_service_connection }}
+  repoName: MyTemp
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+
+- task: Bash@3
+  displayName: Build and run app
+  inputs:
+    targetType: 'inline'
+    script: |
+      npm install
+      node bulletin-board-app\server.js
+      lighthouse http://localhost:8080/
+
+stages:
+- stage: Build
+  displayName: Test, Build and Push docker image
+  jobs:
+  - job: Build
+    displayName: Test, Build, Push
+    steps:
+    - bash: | #this can be run inside docker image
+      npm install
+      node bulletin-board-app\server.js
+      lighthouse $(url)
+      displayName: Lighthouse tests
