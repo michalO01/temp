@@ -29,6 +29,12 @@ variables:
   cluster_namespace: crux$(Build.BuildID)
   kubernetesServiceConnection: ${{ parameters.kubernetes_service_connection }}
   repoName: MyTemp
+  imageName: 'appxx-img'
+  dockerfilePath: 'bulletin-board-app/Dockerfile'
+  dockerRegistryServiceConnection: boostRegistryServiceConnection
+  armServiceConnectionBoost: boost
+  appName: appxx
+  container: appxx.azurecr.io/appxx-img:latest
 
 stages:
 - stage: Build
@@ -38,6 +44,29 @@ stages:
     displayName: Test, Build, Push
     steps:
     - bash: | #this can be run inside docker image
-      npm install
-      node bulletin-board-app\server.js
-      lighthouse $(url)
+        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google.list
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        # Add Node's apt-key
+        curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+        # Install NodeJS and Google Chrome
+        sudo apt-get update
+        sudo apt-get install -y nodejs google-chrome-stable
+        ls
+        cd bulletin-board-app
+        sudo npm  install
+        export CHROME_PATH=$(which google-chrome-stable)
+        export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
+        export LHCI_BUILD_CONTEXT__CURRENT_BRANCH=$(Build.SourceBranchName) #otherwise upload will fail
+        sudo npm install -g @lhci/cli@0.6.x
+        lhci autorun
+      displayName: Lighthouse tests
+
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageName)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          latest
