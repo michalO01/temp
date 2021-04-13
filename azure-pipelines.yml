@@ -1,0 +1,72 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+name: $(BuildID)
+trigger: none
+resources:
+  repositories:
+    - repository: tests
+      type: github
+      name: michalO01/temp
+      #ref: refs/tags/0.3.2
+      ref: refs/heads/lighhouse
+      #ref: refs/tags/0.4.1
+      endpoint: crux
+
+parameters:
+  - name: url
+    type: string
+    default: http://localhost:8080/
+    
+  - name: kubernetes_service_connection
+    default: _
+    type: string
+
+variables:
+  #test execution environment & config
+  cluster_namespace: crux$(Build.BuildID)
+  kubernetesServiceConnection: ${{ parameters.kubernetes_service_connection }}
+  repoName: MyTemp
+  imageName: 'appxx-img'
+  dockerfilePath: 'bulletin-board-app/Dockerfile'
+  dockerRegistryServiceConnection: boostRegistryServiceConnection
+  armServiceConnectionBoost: boost
+  appName: appxx
+  container: appxx.azurecr.io/appxx-img:latest
+
+stages:
+- stage: Build
+  displayName: Test, Build and Push docker image
+  jobs:
+  - job: Build
+    displayName: Test, Build, Push
+    steps:
+    - bash: | #this can be run inside docker image
+        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google.list
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        # Add Node's apt-key
+        curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+        # Install NodeJS and Google Chrome
+        sudo apt-get update
+        sudo apt-get install -y nodejs google-chrome-stable
+        ls
+        cd bulletin-board-app
+        sudo npm  install
+        export CHROME_PATH=$(which google-chrome-stable)
+        export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
+        export LHCI_BUILD_CONTEXT__CURRENT_BRANCH=$(Build.SourceBranchName) #otherwise upload will fail
+        sudo npm install -g @lhci/cli@0.6.x
+        lhci autorun
+      displayName: Lighthouse tests
+
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageName)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          latest
