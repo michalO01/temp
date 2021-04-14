@@ -57,15 +57,3 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           latest
-
-- stage: Deploy
-  displayName: Deploy App
-  jobs:
-  - job:
-    steps:
-    - task: AzureWebAppContainer@1 # Add this at the end of your file
-      displayName: Deploy
-      inputs:
-        azureSubscription: '$(armServiceConnectionBoost)'
-        appName: '$(appname)'
-        containers: $(container)
