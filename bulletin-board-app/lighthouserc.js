@@ -2,7 +2,8 @@ module.exports = {
     ci: {
         collect: {
             isSinglePageApplication: true,
-            startServerCommand : 'node server.js' ,
+            //startServerCommand : 'node server.js' ,
+			startServerCommand : 'npm i puppeteer' , 
 			puppeteerScript: '/puppeteer/idamLoginChrome.js', 
             url: ['http://localhost:8080', 'https://www.objectivity.co.uk/'] //- in the pipeline
             //url : ['https://appxx.azurewebsites.net/'] //or against a deployed application
