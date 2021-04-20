@@ -1,12 +1,12 @@
 const puppeteer = require('puppeteer');
 
 (async() => {
-    const browser = await puppeteer.launch({headless: false, args: ['--start-maximized'], defaultViewport: null, executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'});
+    const browser = await puppeteer.launch({headless: false, args: ['--start-maximized'], defaultViewport: null,
+     executablePath: '/usr/bin/google-chrome-stable' });
     const page = await browser.newPage();
     const url = "https://dev-learninglab.ti.pwc.co.uk/";
     const login = "rypsf1j36kj00001@mailinator.com";
     const password = "Test1234567!";
-
 
     await page.goto(url);
 
