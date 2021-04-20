@@ -43,7 +43,7 @@ stages:
         sudo npm  install
         sudo npm install puppeteer         
         export CHROME_PATH=$(which google-chrome-stable)
-        echo CHROME_PATH
+        echo $CHROME_PATH
         export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
         export LHCI_BUILD_CONTEXT__CURRENT_BRANCH=$(Build.SourceBranchName) #otherwise upload will fail
         sudo npm install -g @lhci/cli@0.6.x
