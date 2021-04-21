@@ -1,9 +1,10 @@
 const puppeteer = require('puppeteer');
 
+
 (async() => {
     const browser = await puppeteer.launch({headless: false, args: ['--start-maximized'], defaultViewport: null,
-     executablePath: '/usr/bin/google-chrome-stable'
-    // executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
+    // executablePath: '/usr/bin/google-chrome-stable'
+     executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
      });
     const page = await browser.newPage();
     const url = "http://localhost:8080/";
@@ -25,4 +26,6 @@ const puppeteer = require('puppeteer');
     //Submit
     await page.waitForSelector(submitBtn);
     await page.click(submitBtn);
+
+    await page.close();
 })();
