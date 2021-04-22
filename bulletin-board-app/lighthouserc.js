@@ -2,7 +2,7 @@ module.exports = {
     ci: {
         collect: {
             isSinglePageApplication: true,
-            startServerCommand : 'node server.js' ,
+            startServerCommand : 'node server.js; sleep 10',
 			puppeteerScript: '../puppeteer/appActions.js', 
             url: ['http://localhost:8080'] //- in the pipeline
             //url : ['https://appxx.azurewebsites.net/'] //or against a deployed application
