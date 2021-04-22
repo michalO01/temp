@@ -28,6 +28,8 @@ stages:
   displayName: Test, Build and Push docker image
   jobs:
   - job: Build
+    workspace:
+      clean: all
     displayName: Test, Build, Push
     steps:
     - bash: | #this can be run inside docker image
@@ -49,5 +51,6 @@ stages:
         sudo npm install -g @lhci/cli@0.6.x
         lhci autorun
       displayName: Lighthouse tests
-    workspace:
-      clean: all
+    
+
+
