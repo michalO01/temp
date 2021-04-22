@@ -50,4 +50,5 @@ stages:
         lhci autorun
       displayName: Lighthouse tests
 
-
+    workspace:
+        clean: all
