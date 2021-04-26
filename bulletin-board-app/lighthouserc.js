@@ -2,7 +2,7 @@ module.exports = {
     ci: {
         collect: {
             isSinglePageApplication: true,
-			startServerCommand : 'echo listen',
+			startServerCommand : 'while [ 1==1 ]; do echo "listen";sleep 1; done',
 			startServerReadyPattern : 'listen',
 			puppeteerScript: '../puppeteer/pagePWC.js', 
             url: ['https://www.pwc.com/'] //- in the pipeline
