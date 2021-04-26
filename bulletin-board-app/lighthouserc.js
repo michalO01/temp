@@ -2,6 +2,7 @@ module.exports = {
     ci: {
         collect: {
             isSinglePageApplication: true,
+			startServerCommand : 'echo listen'
 			puppeteerScript: '../puppeteer/pagePWC.js', 
             url: ['https://www.pwc.com/'] //- in the pipeline
             //url : ['https://appxx.azurewebsites.net/'] //or against a deployed application
