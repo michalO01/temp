@@ -2,8 +2,8 @@ module.exports = {
     ci: {
         collect: {
             isSinglePageApplication: true,
-			startServerCommand : 'while [ 1==1 ]; do echo "listen";sleep 1; done',
-			startServerReadyPattern : 'listen',
+			// startServerCommand : 'while [ 1==1 ]; do echo "listen";sleep 1; done',
+			 startServerReadyPattern : 'Magic',
 			puppeteerScript: '../puppeteer/pagePWC.js', 
             url: ['https://www.pwc.com/'] //- in the pipeline
             //url : ['https://appxx.azurewebsites.net/'] //or against a deployed application
