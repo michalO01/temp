@@ -30,7 +30,7 @@ module.exports = async() => {
     var element = await page.$x(todaysIssuesTab);
     await element[0].click()
 
-    await page.close();
+    await browser.close();
 
     console.log("script done");
 };
