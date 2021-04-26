@@ -10,6 +10,7 @@ const puppeteer = require('puppeteer');
     const url = "https://www.pwc.com/";
 
     await page.goto(url);
+    console.log("open page: " + url);
 
     //locators
     const industriesTab = "//a[@role='tab']/span[contains(text(), 'Industries')]";
@@ -30,4 +31,6 @@ const puppeteer = require('puppeteer');
     await element[0].click()
 
     await page.close();
+
+    console.log("script done");
 })();
