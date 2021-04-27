@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 
 
 module.exports = async() => {
-    const browser = await puppeteer.launch({headless: false, args: ['--start-maximized'], defaultViewport: null,
+    const browser = await puppeteer.launch({headless: true, args: ['--start-maximized'], defaultViewport: null,
      executablePath: '/usr/bin/google-chrome-stable'
     // executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
      });
